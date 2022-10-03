@@ -1,6 +1,7 @@
-//  https://jsonplaceholder.typicode.com/users
-
+//  https://jsonplaceholder.typicode.com/user
+import './App.css';
 import React, { useEffect, useState } from 'react'
+import { success } from './Toast';
 
 function ContactList() {
 
@@ -8,36 +9,36 @@ function ContactList() {
   const [loading, setLoading] = useState(true);
   const [contactInput, setContactInput] = useState({
     name: "",
-    phone:""
+    phone: ""
   })
-  const onHandleChange = (event) =>{
-    setContactInput({...contactInput, [event.target.name] : event.target.value })
+  const onHandleChange = (event) => {
+    setContactInput({ ...contactInput, [event.target.name]: event.target.value })
   }
-  const [isEditing,setIsEditing] = useState({
+  const [isEditing, setIsEditing] = useState({
     edit: false,
-    contactId:""
+    contactId: ""
   })
-
+  // load data from api before component load.
   useEffect(() => {
-    (async() => {
-        const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
-        const data = await res.json();
-        console.log(data)
-        setData(data);
-        setLoading(false);
+    (async () => {
+      const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
+      const data = await res.json();
+      console.log(data)
+      setData(data);
+      setLoading(false);
     })();
   }, []);
 
 
-   // update contact
-   const updateContact = () =>{
+  // update contact list
+  const updateContact = () => {
 
     // dummy put call
     const res = fetch('https://jsonplaceholder.typicode.com/posts/1', {
       method: 'PUT',
       body: JSON.stringify({
         name: contactInput.name,
-        phone:contactInput.phone
+        phone: contactInput.phone
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -51,30 +52,31 @@ function ContactList() {
     console.log(index)
     const contact = currContactList.find(contact => contact.id === contactId);
     currContactList[index] = {
-        ...contact,
-        name: contactInput.name,
-        phone:contactInput.phone
+      ...contact,
+      name: contactInput.name,
+      phone: contactInput.phone
     }
     setData(currContactList);
     setContactInput({
-        name:"",
-        phone:""
+      name: "",
+      phone: ""
     })
-    setIsEditing({...isEditing, edit:false,contactId:""})
+    setIsEditing({ ...isEditing, edit: false, contactId: "" })
+    success('updated successfully !!!')
   }
 
   // edit detail in input box
-  const onContactEdit = (id) =>{
-    setIsEditing({...isEditing, edit:true,contactId:id})
+  const onContactEdit = (id) => {
+    setIsEditing({ ...isEditing, edit: true, contactId: id })
     const currContactList = [...data]
     const contact = currContactList.find(contact => contact.id === id);
-    setContactInput({phone:contact.phone,name:contact.name})
+    setContactInput({ phone: contact.phone, name: contact.name })
   }
 
   // add contact 
-  const onContactAdd = () =>{
+  const onContactAdd = () => {
     // dummy post call
-    const res =fetch('https://jsonplaceholder.typicode.com/posts', {
+    const res = fetch('https://jsonplaceholder.typicode.com/posts', {
       method: 'POST',
       body: JSON.stringify({
         title: 'foo',
@@ -88,18 +90,19 @@ function ContactList() {
 
     // add contact item
     setData([
-        ...data,{id:Math.floor(Math.random() * 100),name:contactInput.name,phone:contactInput.phone}
+      ...data, { id: Math.floor(Math.random() * 100), name: contactInput.name, phone: contactInput.phone }
     ])
 
     setContactInput({
-        name:"",
-        phone:""
+      name: "",
+      phone: ""
     })
+    success('Added successfully !!!')
   }
 
   // detete contact
-  const deteteContact = (id) =>{
-    
+  const deteteContact = (id) => {
+
     // dummy delete call
     const res = fetch('https://jsonplaceholder.typicode.com/users/id', {
       method: 'DELETE',
@@ -107,53 +110,58 @@ function ContactList() {
     // delete from data array
     const updatedList = data.filter(item => item.id !== id)
     setData(updatedList)
+    success('deleted successfully !!!')
   }
 
   return (
-    <div>
-
+    <div >
       <div className='d-flex justify-content-evenly mt-3 ms-5 w-75'>
-            <div>
-              <div>
-                  <input  type="text" 
-                  placeholder="Enter name" 
-                  name='name'
-                  value={contactInput.name} 
-                  onChange={(e)=>onHandleChange(e)}
-                  />
-              </div>
-              <div>
-                  <input  type="text" 
-                  placeholder="Enter phone" 
-                  name='phone'
-                  value={contactInput.phone}
-                  onChange={(e)=>onHandleChange(e)}
-                  />
-              </div>
-            </div>
-            {!isEditing.edit ?<button className='btn btn-primary align-self-center ms-2 p-2' onClick={()=>onContactAdd()}>+ ADD</button>
-              :<button className='btn btn-warning align-self-center ms-2 p-2' onClick={()=>updateContact()}>Update</button>} 
-            </div>
+        <div>
 
-      <div className='row center m-5'>
-          <div className='col-3'>Name</div>
-          <div className='col-3'>Phone</div>
-          <div className='col-3'>Update</div>
-          <div className='col-3'>Delete</div>
+          <input type="text"
+            placeholder="Enter name"
+            name='name'
+            value={contactInput.name}
+            onChange={(e) => onHandleChange(e)}
+          />
+
+          <input type="text"
+            placeholder="Enter phone"
+            name='phone'
+            value={contactInput.phone}
+            onChange={(e) => onHandleChange(e)}
+          />
+
+        </div>
+        {!isEditing.edit ? <button className='btn btn-primary text-light align-self-center button-style' onClick={() => onContactAdd()}>+ ADD</button>
+          : <button className='btn btn-info text-light align-self-center button-style' onClick={() => updateContact()}>Update</button>}
       </div>
-      
-      {loading 
-      ? (<p>Loading....</p>)
-      : (data.map(item => (
-          <div className='row mt-3 ms-2 me-3' key={item.id}>
-              <div className='col-3'>{item.name}</div>
-              <div className='col-3'>{item.phone}</div>
-              <div className='col-3'><i onClick={()=> onContactEdit(item.id)} className="fa-solid fa-pen-to-square"></i></div>
-              <div className='col-3'><i onClick={()=> deteteContact(item.id)} className="fa-solid fa-trash-can"></i></div>
-          </div>   
-      )))}
 
-  </div>
+      <hr />
+
+      <div className='margin'>
+        <div className='row mt-3 ms-5'>
+          <div className='col-3 text-success fs-4'>Name</div>
+          <div className='col-4 text-success fs-4'>Phone</div>
+          <div className='col-2 text-success fs-4'>Update</div>
+          <div className='col-1 text-success fs-4'>Delete</div>
+        </div>
+      </div>
+
+      <div className='margin'>
+        {loading
+          ? (<p>Loading....</p>)
+          : (data.map(item => (
+            <div className='row mt-3 ms-5 ' key={item.id}>
+              <div className='col-3 fs-6 text-align'>{item.name}</div>
+              <div className='col-3 fs-6 text-align'>{item.phone}</div>
+              <div className='col-2'><i onClick={() => onContactEdit(item.id)} className="fa-solid fa-pen-to-square fs-6"></i></div>
+              <div className='col-1'><i onClick={() => deteteContact(item.id)} className="fa-solid fa-trash-can fs-6"></i></div>
+            </div>
+          )))}
+      </div>
+
+    </div>
   )
 }
 
