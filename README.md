@@ -9,8 +9,8 @@
 - Delete user from DELETE call.
 
 ## Project demo
-![image](https://github.com/Yashaswi-Anand/Habit-Tracker/blob/master/screenshots/image1.png)
-![image](https://github.com/Yashaswi-Anand/Habit-Tracker/blob/master/screenshots/image2.png)
+![image](https://github.com/Yashaswi-Anand/React-contact-list/blob/master/screenshots/image1.png)
+![image](https://github.com/Yashaswi-Anand/React-contact-list/blob/master/screenshots/image2.png)
 
 
 ## Deployment
