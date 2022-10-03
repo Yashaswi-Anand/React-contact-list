@@ -8,10 +8,13 @@
 - Update user data with PUT call.
 - Delete user from DELETE call.
 
-
+## Project demo
+![image](https://github.com/Yashaswi-Anand/Habit-Tracker/blob/master/screenshots/image1.png)
+![image](https://github.com/Yashaswi-Anand/Habit-Tracker/blob/master/screenshots/image2.png)
 
 
 ## Deployment
 - Netlify
 
 ## Hosted url
+https://contact-listapp.netlify.app/
